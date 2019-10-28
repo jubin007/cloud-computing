@@ -1,0 +1,58 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <style>
+    body{
+      background-color:LightGray;
+    }
+</style>
+</head>
+<body>
+{% if spectator %}
+<form action="/editpage" method="post">
+ <input type="submit" name = "followusers"  value="{{follow}}" align="center"/>
+    <input type="hidden"  name="user_id" value="{{myuser.key.id()}}"/>
+</form>
+{%endif%}
+<form action="/editpage" method="post">
+    <div >
+        <div class="left">
+            User Name: <input name="user_name" type="text" value= {{myuser.user_name}} disabled> <br /></br>
+        </div>
+    </div>
+    <div>
+        <div class="left">
+            First Name:<input name="user_first_name" type="text" value="{{myuser.first_name}}" {% if spectator %} disabled {%endif%}}> <br /></br>
+        </div>
+    </div>
+        <div>
+        <div class="left">
+            Last Name:<input name="user_last_name" type="text" value="{{myuser.last_name}}" {% if spectator %} disabled {%endif%}}> <br /></br>
+        </div>
+    </div>
+    </br>
+    <h1>MyBio</h1>{{myuser.bio}}
+    </br>
+    </br>
+    <input type="submit" name="cancel" value="Back"  />
+    {% if spectator %}{%else%}
+    <input type="hidden" name="user_id" value="{{myuser.key.id()}}" />
+    <input type="submit" name="update" value="Update"  />
+    {%endif%}
+<h2>Feeds</h2>
+    <div >
+  <ul>
+{% for tweet in tweets %}
+<li>
+      <img src=""/>
+      {{ tweet.user_name }}</a></h3>
+      <p>{{tweet.text_share}}</p>
+      <p align="right">{{tweet.time}}</p>
+</li>
+{% endfor %}
+  </ul>
+</div>
+</form>
+</body>
+</html>

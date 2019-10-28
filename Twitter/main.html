@@ -1,0 +1,100 @@
+<html>
+<head>
+  <title>Twitter</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+</head>
+<body align="center">
+<div>
+{% if myuser %}
+
+<h1>Twitter!
+    <p> User id: {{myuser.user_name}} </p>
+
+    <button class="btn btn-primary" onclick="location.href='/editpage?user_id={{myuser.key.id()}}'" type="button">
+        View Profile
+    </button>
+
+    <button class="btn btn-primary" onclick="location.href='{{ url }}'" type="button">
+        Logout
+    </button>
+</h1>
+
+{% if myuser.user_name | length == 0 %}
+
+<form method="Get" enctype="multipart/form-data" class="form-group">
+</br>
+        <p><strong>Put user ID first </strong>
+        <input type="text" name="user_name" value="" pattern="[A-Za-z]*"  align="center" title="Alphabet only" minlength=3>
+        </br></br>
+        Write your bio
+            <textarea  name="bio" rows="4" cols="50"  maxlength="250"></textarea>
+            </br>
+        </p>
+    <input type="submit" value="Set Username" />
+
+</form>
+
+{% else %}
+
+<br />
+<form method="Get">
+
+    <p><strong>Search here </strong>
+        <input  type="text" name="search_text" value="" pattern="[A-Za-z]*"  align="center" title="Alphabet only" minlength=2>
+        <select name="query">
+            <option value="user">All</option>
+            <option value="user">User</option>
+            <option value="post">Post</option>
+        </select>
+        <input type="submit" value="Search" class="btn btn-success"/>
+
+</form>
+<form method="Post" enctype="multipart/form-data" align="center"></br>
+
+<textarea rows="4" cols="50" name="text_share" maxlength="250">{% if edit_tweet %}{{edit_tweet.text_share}}{% endif %}</textarea>
+</br>
+        <input type="file" name="image_share" accept="image/*"/>
+    <input class="btn btn-info" type="submit" value="{% if edit_tweet  %}Update{% else %}Share{% endif %}" name = "share_type"/><input type="hidden" value="{% if edit_tweet  %} {{edit_tweet.key.id()}}{% endif %}" name = "edit_tweet_id"/>
+</form>
+
+<div >
+  <ul>
+{% for tweet in tweets %}
+      <form method="Get">
+<li>
+      <img src="" />
+      <h3><a href="/editpage?user_id={{ tweet.user_id }}">{{ tweet.user_name }}</a></h3>
+      <p>{{tweet.text_share}}</p>
+      <p> {{tweet.time}}</p>
+
+    {% if tweet.user_id ==  myuser.key.id() %}
+        <input type="hidden"  name = "tweet_id"  value="{{ tweet.key.id() }}" hidden/>
+        <input class="btn btn-danger" type="submit"  name = "query" value="Delete"/>
+        <input class="btn btn-warning" type="submit"  name = "query" value="Edit"/>
+    {% endif %}
+</li>
+          </form>
+
+{% endfor %}
+  </ul>
+</div>
+
+{% endif %}
+
+{% else %}
+<h1>Welcome to Twitter!
+    <button onclick="location.href='{{ url }}'" type="button">
+        LOGIN
+    </button>
+</h1>
+<p><strong>You must login </strong></p>
+
+{% endif %}
+</div>
+</body>
+</html>
