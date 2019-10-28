@@ -1,0 +1,172 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>GPU App</title>
+
+</head>
+<body bgcolor="#e6e6fa">
+<script type="text/javascript">
+    function validateRadioSelector(radio, cls) {
+        let radios = document.getElementsByClassName("" + cls);
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].checked = false;
+        }
+        radio.checked = true;
+        radios = document.querySelectorAll("input[type='radio']");
+        let count = 0;
+        for (i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                count++;
+            }
+        }
+        document.getElementById("compare").disabled = count !== 2;
+    }
+</script>
+<table style="text-align:center; color: white; width: 100%" border="0" cellpadding="5"
+       cellspacing="5" bgcolor="#00008b">
+    {% if user %}
+    <tr>
+        <td width="33%" align="left">
+            {{ user.email() }}
+        </td>
+        <th width="33%">
+            <h3>GPU Application</h3>
+        </th>
+        <td width="33%" align="right">
+            <a href="/">
+                <button>Back</button>
+            </a>
+        </td>
+    </tr>
+</table>
+{% else %}
+<table style="text-align:center; color: white; width: 100%" border="0" cellpadding="5"
+       cellspacing="5" bgcolor="#00008b">
+    <tr>
+        <td width="33%" align="left">
+            Welcome Guest
+        </td>
+        <th width="33%">
+            <h3>GPU Application</h3>
+        </th>
+        <td width="33%" align="right">
+            <a href="{{ url }}">
+                <button> {{ url_string }}</button>
+            </a>
+        </td>
+    </tr>
+</table>
+{% endif %}
+
+
+{% if user %}
+
+<table style="text-align:center; width: 100%" border="0" cellpadding="5"
+       cellspacing="5" bgcolor="#b0c4de">
+    <tr>
+        <th width="50%">
+            <form action="/filter" method="post">
+                <table width="100%" cellpadding="5">
+                    <tr>
+                        <th colspan="2">
+                            GPUs Must Have:
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <td align="right"> Geometry Shader :
+                        </td>
+                        <td>
+                            <input type="checkbox" name="gpu_geomsh" {{ "checked" if gpu_geomsh else "" }}/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"> Tesselation Shader :
+                        </td>
+                        <td>
+                            <input type="checkbox" name="gpu_tessesh" {{ "checked" if gpu_tessesh else "" }}/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"> Shader Int16 :
+                        </td>
+                        <td>
+                            <input type="checkbox" name="gpu_shint16" {{ "checked" if gpu_shint16 else "" }}/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"> Sparse Binding :
+                        </td>
+                        <td>
+                            <input type="checkbox" name="gpu_sparbind" {{ "checked" if gpu_sparbind else "" }}/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"> Texture Compression <br/>ETC2 :
+                        </td>
+                        <td>
+                            <input type="checkbox" name="gpu_texcompetc2" {{ "checked" if gpu_texcompetc2 else "" }}/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"> Vertex Pipeline Stores <br/>And Atomics :
+                        </td>
+                        <td>
+                            <input type="checkbox" name="gpu_vxpipeline" {{ "checked" if gpu_vxpipeline else "" }}/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="left">
+                            <input type="submit" value="Filter">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </th>
+        <th valign="top" width="50%">
+             <form action="/compare" method="post">
+                <table width="100%" cellpadding="5" frame="box">
+                    <tr>
+                        <th colspan="4" bgcolor="#8a2be2">
+                            Available GPUs
+                        </th>
+                    </tr>
+                    {% for item in gpu_entries %}
+                    <tr>
+                        <td width="10%" align="right">
+                            {{ loop.index }}.
+                        </td>
+                        <td align="left">
+                            <a href="/details?gpu_entry={{ item.gpu_name }}">{{ item.gpu_name }}</a>
+                        </td>
+                        <td width="5%" align="center">
+                            <input type="radio" name="gpu_one" value="{{ item.gpu_name }}" class="{{ loop.index }}"
+                                   onclick="validateRadioSelector(this,  {{ loop.index }});">
+                        </td>
+                        <td width="5%" align="center">
+                            <input type="radio" name="gpu_two" value="{{ item.gpu_name }}" class="{{ loop.index }}"
+                                   onclick="validateRadioSelector(this,  {{ loop.index }});">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td>
+
+                        </td>
+                        <td colspan="2">
+                            <input id="compare" type="submit" value="Compare" disabled="disabled">
+                        </td>
+                    </tr>
+                </table>
+
+            </form>
+
+        </th>
+    </tr>
+</table>
+{% endif %}
+
+</body>
+</html>

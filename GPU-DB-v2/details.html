@@ -1,0 +1,135 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>GPU App</title>
+
+</head>
+<body bgcolor="#e6e6fa">
+{% if msg %}
+<script type="text/javascript">
+    alert('{{ msg }}');
+</script>
+{% endif %}
+
+<table style="text-align:center; color: white; width: 100%" border="0" cellpadding="5"
+       cellspacing="5" bgcolor="#00008b">
+    {% if user %}
+    <tr>
+        <td width="33%" align="left">
+            {{ user.email() }}
+        </td>
+        <th width="33%">
+            <h3>GPU Application</h3>
+        </th>
+        <td width="33%" align="right">
+            <a href="/">
+                <button>Back</button>
+            </a>
+        </td>
+    </tr>
+</table>
+{% endif %}
+
+
+{% if user %}
+<table style="text-align:center; width: 100%" border="0" cellpadding="5"
+       cellspacing="5" bgcolor="#b0c4de">
+    <tr>
+        <th width="50%">
+            <table width="100%" cellpadding="5" frame="box">
+                <tr>
+                    <th colspan="2" bgcolor="#8a2be2">
+                        GPU Information
+                    </th>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label>
+                            GPU Name :
+                        </label>
+                    </td>
+                    <td align="left">
+                        {{ gpu_entry.gpu_name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label>
+                            Manufacturer :
+                        </label>
+                    </td>
+                    <td align="left">
+                        {{ gpu_entry.gpu_mfg }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label>
+                            Issued On :
+                        </label>
+                    </td>
+                    <td align="left">
+                        {{ gpu_entry.gpu_isdt }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right"> Geometry Shader :
+                    </td>
+                    <td>
+                        {{ "Yes" if gpu_entry.gpu_geomsh else "No" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"> Tesselation Shader :
+                    </td>
+                    <td>
+                        {{ "Yes" if gpu_entry.gpu_tessesh else "No" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"> Shader Int16 :
+                    </td>
+                    <td>
+                        {{ "Yes" if gpu_entry.gpu_shint16 else "No" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"> Sparse Binding :
+                    </td>
+                    <td>
+                        {{ "Yes" if gpu_entry.gpu_sparbind else "No" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"> Texture Compression <br/>ETC2 :
+                    </td>
+                    <td>
+                        {{ "Yes" if gpu_entry.gpu_texcompetc2 else "No" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"> Vertex Pipeline Stores <br/>And Atomics :
+                    </td>
+                    <td>
+                        {{ "Yes" if gpu_entry.gpu_vxpipeline else "No" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <form action="/update" method="get">
+                            <input type="hidden" name="gpu_entry" value="{{ gpu_entry.gpu_name }}">
+                            <input type="submit" value="Update">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </th>
+        <th valign="top" width="50%">
+
+        </th>
+    </tr>
+</table>
+{% endif %}
+</body>
+</html>
