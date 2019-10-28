@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<meta charset='utf-8'/>
+	</head>
+	<body>
+		<p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
+		<p>you can go to the main page <a href='/'>here</a></p>
+
+		{% if my_gallery %}
+
+			<form method='post' action='{{ upload_url }}' enctype='multipart/form-data'>
+				<input type='file' name="files" multiple /> <br/>
+				<input type='hidden' name='name' value='{{ my_name }}'/>
+				<input type='submit' name='+' value='+' /> <br/>
+			</form>
+
+			<div style='display: grid; grid-gap: 1rem; grid-template-columns: auto auto auto auto;'>
+				{% for image in my_gallery.images %}
+					<div>
+						<img src='/image?name={{ my_name }}&image={{ image.name }}' /><br />
+						<a href='/download?name={{ my_name }}&image={{ image.name }}'>{{ image.name }}</a>
+						<form method='post' action='/gallery?name={{ my_name }}'>
+							<input type='hidden' name='image' value='{{ image.name }}'/>
+							<input type='submit' name="x" value='x' />
+						</form>
+					</div>
+				{% endfor %}
+			</div>
+
+		{% endif %}
+	</body>
+</html>
