@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Special Dropbox</title>
+<!-- Helps to adjust according to the device's screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"/></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  .sidenav {
+      background-color: lightgreen;
+      height: 100%;
+      /* To align in correct padding */
+      padding: 25px;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+    <!-- This class helps us to create multiple windows in single screen -->
+    <!-- column with sm (width) 3 -->
+<div class="col-sm-3 sidenav">
+<div class="nav nav-pills nav-stacked">
+  <!-- This Panel is alligned in the left side of the screen for easy access -->
+  <h3>DropBox Access Panel</h3>
+      <div><br><br>
+      Welcome {{user.email()}}<br>
+      Enjoy the first color-blind friendly DropBox...<br>
+      To Sign out, click <a href="{{ url }}">here</a><br/>
+      <br/>
+      </div>
+      <div></br>
+      <h4>Present Folder</h4>
+      <label class="btn btn-default">Root Folder / {{ presentfolder }}</label>
+    </div>
+    </br></br>
+    <div>
+      <h4>Upload Area</h4>
+      <!-- This form is responsible to upload the file into the blobstore -->
+      <form action="{{ upload_url }}" method="post" enctype="multipart/form-data" class="form-group">
+        Upload a file to your Dropbox
+        <input type="file" name="file" class="btn btn-default" required/>
+        <input type="hidden" value="{{ presentfolder }}" name="presentfolder"/>
+        <input type="submit" value="Upload" class="btn btn-primary"/>
+      </form>
+    </div>
+    </br>
+    <div>
+      <!-- This section is for the creation of new directory and is found under Dropbox Access Panel -->
+      <h4>Folder Options</h4><br>
+    Enter the name of new folder
+    <form method="post" action="/">
+      <input type="text" name="directoryName" placeholder="Folder name" required/></br>
+      <input type="submit" value="Create Folder" name="folderOperation" class="btn btn-primary"/>
+    </form>
+  </div>
+  </br>
+    <div><br>
+        <!-- This section is for the deletion of current directory and is found under Dropbox Access Panel -->
+      Delete Present Folder
+    <form method="post" action="/">
+      <input type="hidden" value="{{ presentfolder }}" name="deletionFolder"/>
+      <input type="submit" value="Delete Folder" name="folderOperation" class="btn btn-danger"/>
+    </form>
+  </div>
+</div>
+</div>
+<div style="background-color:lightblue" align="center">
+  <br><br>
+<h1> Welcome To The All New Colorful DropBox </h1><br><br><br>
+</div>
+<div class="col-sm-9" style="background-color:lightyellow"><br><br>
+  <h4>The All New Colorful Dropbox is sepecially designed by the best choice of colors from color blind friendly pallette as mentioned in the website <a href="https://venngage.com/blog/color-blind-friendly-palette/">venngage</a>.com</h4>
+  <div style="background-color: #ffff66">
+    <!-- Toggler button helps to switch between multiple folders -->
+<br><p>Please use the Toggler to toggle between folders
+    <form method="get" action="/">
+      <input type="hidden" value="{{ presentfolder }}" name="my_index"/>
+      <input type="submit" value="Toggler" name="toggle" class="btn btn-success"/>
+    </form><br><br>
+    <h4>Folders List</h4>
+    <p>Click on the folder name to view the files in it
+    <form method="get" action="/" class="form-group">
+      {% for i in folders %}
+        <input type="submit" value="{{ i }}" name="redirect" class="btn btn-info"/>
+      {% endfor %}
+    </form>
+  </div>
+</div>
+
+
+    <div class="col-sm-9 container" style="background-color:lightblue">
+    <br><br><h4>Files List<br><br>
+    <!-- we will then list the blobs that we do have in the datastore available to us -->
+    {% for i in myuser%}
+      {% for j in i.directory%}
+        {% if j.fileBool %}
+          {% if j.directoryName == presentfolder %}
+            {% if j.blobname %}
+            <div class="jumbotron">
+              {{ j.file }}
+              <form action="/download" method="get">
+                <input type="hidden" value="{{ presentfolder }}" name="presentfolder"/>
+                <input type="hidden" value="{{ j.file }}" name="file"/>
+                <input type="hidden" value="{{ loop.index - 1 }}" name="index" />
+                <input type="submit" value="Download" name="Download" />
+                <input type="submit" value="Delete" name="Download" />
+              </form><br/>
+            </div>
+            {% endif %}
+          {% endif %}
+        {%endif%}
+      {%endfor%}
+    {%endfor%}
+  </div>
+
+  </div>
+</div>
+</body>
+</html>
