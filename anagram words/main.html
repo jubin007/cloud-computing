@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <meta charset="utf-8"/>
+  </head>
+  <style>
+  body{
+   background-color: khaki;
+  }
+ </style>
+
+  <body>
+    {% if myuser %}
+    {{ welcome }} {{ user.email() }} welcome to the application<br/>
+
+    Search For anagram
+    <form method='get' action='/'>
+      <input type='text' name='name' onkeyup="lettersOnly(this)"/><br/>
+      <input type ='submit' name="search" value="search"/><br/><br/>
+    </form>
+
+      To add word to the word list <a href="/dictionary">click here</a> <br/>
+
+    {%for item in myanagrams%}
+      <p>{{loop.index}}. {{item}} </p>
+    {%endfor%}
+
+    <p>{{myword}}- anagram key</p>
+    <br/>
+    Total no of words added in Engine is
+    {% for i in myuser.lists %}
+    {{ words[loop.index0] }}
+    {% endfor %}<br/>
+
+    {% endif %}
+
+    <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
+  </body>
+  <script>
+  function lettersOnly(input) {
+    var regex = /[^a-z]/gi;
+    input.value = input.value.replace(regex, "");
+  }
+  </script>
+</html>

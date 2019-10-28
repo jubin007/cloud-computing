@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <meta charset="utf-8"/>
+  </head>
+  <style>
+  body{
+   background-color: khaki;
+  }
+ </style>
+  <body>
+    {% if myuser %}
+    {{ welcome }} {{ user.email() }} welcome to the application<br/>
+    <br/>
+
+    Add word to the Dictionary<br/>
+      <form method='post' action='/dictionary'>
+        <input type='text' name='name' /><br/>
+
+        <input type ='submit' name="add" value='add'/><br/><br/>
+      </form>
+      List Of Dictionary added<br/>
+      {% for name in myuser.lists %}
+      <input type="button" title="dfd"/>
+      Word number({{loop.index}})<br/> {{ name }}({{ no_words[loop.index0] }}) unique anagram words <br/>
+        <form method='post' action='/dictionary' onsubmit="return confirm('This operation will delete all the word list from the dictionary.');">
+          <input type='hidden' name='name' value='{{ name }}'/>
+          <input type='submit' name="delete" value='delete'/>
+        </form>
+      {% endfor %}<br/>
+      to back to the main page <a href="/">click here</a>
+    {% endif %}
+    <p>you can {{ url_string }} <a href='{{ url }}'>here</a></p>
+  </body>
+</html>
